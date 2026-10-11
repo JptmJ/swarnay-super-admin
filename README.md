@@ -6,12 +6,25 @@ Nobody but a platform operator can sign in here.
 
 ```bash
 npm install
-npm run dev        # http://localhost:4100
+npm run dev            # http://localhost:4100, against the backend on your machine (:4000)
+npm run dev:deployed   # http://localhost:4100, against the deployed backend — live data
 ```
 
-Needs the backend running on `:4000` (set `BACKEND_URL` in `.env.local` to point
-elsewhere). `NEXT_PUBLIC_APP_URL` is where the tenant app is served — the
-Support tab builds its "open the shop" link from it.
+Which backend it talks to comes from the committed `.env.<mode>` files, so
+nobody edits a shared file to switch:
+
+| File | Used by | `BACKEND_URL` |
+|---|---|---|
+| `.env.development` | `npm run dev` | `http://localhost:4000` |
+| `.env.deployed` | `npm run dev:deployed` | `https://api.swarnay.com` |
+| `.env.production` | `next build` / `next start` | `https://api.swarnay.com` (the host's own setting wins) |
+
+`NEXT_PUBLIC_APP_URL` is where the tenant app is served — the Support tab builds
+its "open the shop" link from it. Personal overrides go in
+`.env.development.local`, which is not committed. The backend URL is read on the
+server only; the browser never calls the backend directly, so no CORS setup is
+needed. See `../swarnay-backend/docs/ENVIRONMENTS.md` for how all three apps fit
+together.
 
 ## First sign-in
 
@@ -19,7 +32,7 @@ Create the first operator from the backend — the API has no endpoint that
 creates one, so it is made on the command line:
 
 ```bash
-cd ../karatsetu-backend
+cd ../swarnay-backend
 npm run seed:superadmin -- --password='...'
 ```
 
@@ -38,7 +51,7 @@ support session — which is logged.
 
 ### Inside a jewellery business
 
-Three kinds, in `karatsetu-backend/src/modules/platform/roles.ts`:
+Three kinds, in `swarnay-backend/src/modules/platform/roles.ts`:
 
 | Kind | What it is |
 |---|---|
