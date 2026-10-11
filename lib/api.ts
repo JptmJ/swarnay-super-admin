@@ -152,6 +152,21 @@ export interface SupportSessionRow {
   action_count: string;
 }
 
+/** Who may unlock the vault, by the kind of role they hold. */
+export type VaultRoleType = 'owner' | 'admin' | 'staff';
+
+/** A business's security vault and private entry, as the super admin sees them. The passcode is never sent. */
+export interface TenantSecurity {
+  vault: {
+    enabled: boolean; hasPasscode: boolean; passcodeChangedAt: string | null; unlockMinutes: number;
+    allowedRoleTypes: VaultRoleType[]; revision: number; updatedAt: string | null;
+  };
+  gateway: { enabled: boolean; path: string; points: Array<{ x: number; y: number }>; revision: number; updatedAt: string | null };
+  /** Vault unlocks open right now. */
+  activeUnlocks: number;
+  lockouts: Array<{ kind: 'vault' | 'gateway'; userId: string; userName: string; lockedUntil: string }>;
+}
+
 /*
  * `holds()` lives in `lib/permissions.ts`, not here. This module is
  * `'use client'`, and a Server Component that imports a *value* from it fails at

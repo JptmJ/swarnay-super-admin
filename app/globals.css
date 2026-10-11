@@ -217,3 +217,19 @@ tr.row-detail, tr.row-detail:hover { background: var(--forest-surface); }
 .sub-item { display: flex; align-items: flex-start; gap: 9px; font-weight: 500; cursor: pointer; }
 .sub-item input { width: auto; margin-top: 2px; accent-color: var(--forest); }
 .sub-item.fixed { cursor: default; color: var(--ink-faint); }
+
+/* ---------------- security vault & private entry ---------------- */
+.toggle-row { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-weight: 500; }
+.toggle-row input { width: auto; margin-top: 3px; accent-color: var(--forest); }
+.toggle-row .hint { display: block; font-weight: 400; color: var(--ink-faint); font-size: 11.6px; }
+.role-set { border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px 12px; margin: 16px 0 0; display: flex; gap: 10px 22px; flex-wrap: wrap; }
+.role-set legend { font-size: 12px; font-weight: 600; color: var(--ink-secondary); padding: 0 4px; }
+.link-btn { background: none; border: 0; padding: 0; color: var(--forest-light); font: inherit; text-decoration: underline; cursor: pointer; }
+.pattern-art {
+  position: relative; width: 100%; max-width: 640px; aspect-ratio: 16 / 11; border-radius: 10px;
+  border: 1px solid var(--border); background: #f7f8f4; cursor: crosshair; overflow: hidden;
+}
+.pattern-art.is-full { cursor: default; }
+.pattern-art:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.pattern-art > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.pattern-points { pointer-events: none; }

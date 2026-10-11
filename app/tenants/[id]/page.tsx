@@ -6,7 +6,7 @@ import { Shell } from '@/components/Shell';
 import { TenantWorkspace } from './TenantWorkspace';
 import type {
   BranchRow, ModuleRow, PermissionTreeModule, SupportSessionRow,
-  TenantRoleRow, UserRow,
+  TenantRoleRow, TenantSecurity, UserRow,
 } from '@/lib/api';
 
 export const dynamic = 'force-dynamic';
@@ -23,7 +23,7 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ i
   if (!(await readSession())) redirect('/login');
   const { id } = await params;
 
-  const [operator, detailResult, sessionsResult, tenantRolesResult, treeResult] = await Promise.all([
+  const [operator, detailResult, sessionsResult, tenantRolesResult, treeResult, securityResult] = await Promise.all([
     readOperator(),
     callBackend<Detail>(`/api/platform/tenants/${id}`),
     // Open windows into this shop, so the Support tab can show and end them.
@@ -31,6 +31,8 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ i
     // This business's own roles, and the tree the staff role builder ticks.
     callBackend<{ rows: TenantRoleRow[] }>(`/api/platform/tenants/${id}/roles`),
     callBackend<{ modules: PermissionTreeModule[] }>('/api/platform/permission-tree'),
+    // The vault and private entry — set only from here, never inside the shop.
+    callBackend<TenantSecurity>(`/api/platform/tenants/${id}/security`),
   ]);
 
   if (detailResult.status === 401) redirect('/login');
@@ -53,6 +55,7 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ i
         sessions={sessionsResult.data?.rows ?? []}
         tenantRoles={tenantRolesResult.data?.rows ?? []}
         permissionTree={treeResult.data?.modules ?? []}
+        security={securityResult.data}
       />
     </Shell>
   );
