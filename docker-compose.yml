@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  super-admin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ratnagrid-super-admin
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    environment:
+      NODE_ENV: production
+      PORT: 4100
+
+    command: npm run start
+
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

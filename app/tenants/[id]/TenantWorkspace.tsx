@@ -5,10 +5,11 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   AdminApiError, api,
-  type BranchRow, type ModuleRow, type PermissionTreeModule,
-  type TenantRoleRow, type UserRow,
+  type BranchRow, type ModuleRow, type PermissionTreeModule, type SupportSessionRow,
+  type TenantRoleRow, type TenantSecurity, type UserRow,
 } from '@/lib/api';
 import { RolesTab } from './RolesTab';
+import { SecurityTab } from './SecurityTab';
 
 interface Detail {
   tenant: Record<string, string | null>;
@@ -19,12 +20,15 @@ interface Detail {
   globalAdmin: UserRow | null;
 }
 
-type Tab = 'users' | 'roles' | 'branches' | 'modules' | 'settings';
+type Tab = 'users' | 'roles' | 'branches' | 'modules' | 'security' | 'support' | 'settings';
 
 export function TenantWorkspace({
-  tenantId, detail, tenantRoles, permissionTree,
+  tenantId, detail, sessions, tenantRoles, permissionTree, security,
 }: {
   tenantId: string; detail: Detail;
+  sessions: SupportSessionRow[];
+  /** Null when it could not be loaded; the tab says so. */
+  security: TenantSecurity | null;
   tenantRoles: TenantRoleRow[];
   permissionTree: PermissionTreeModule[];
 }) {
@@ -33,7 +37,7 @@ export function TenantWorkspace({
   const [busy, setBusy] = useState(false);
 
   // One operator, holding everything — nothing here is permission-gated.
-  const tabs: Tab[] = ['users', 'roles', 'branches', 'modules', 'settings'];
+  const tabs: Tab[] = ['users', 'roles', 'branches', 'modules', 'security', 'support', 'settings'];
   const [tab, setTab] = useState<Tab>('users');
 
   const tenant = detail.tenant;
@@ -78,6 +82,8 @@ export function TenantWorkspace({
             {t === 'roles' && `Roles (${tenantRoles.length})`}
             {t === 'branches' && `Branches (${detail.branches.length})`}
             {t === 'modules' && `Modules (${detail.modules.length})`}
+            {t === 'security' && `Security${security?.vault.enabled ? ' · vault on' : ''}`}
+            {t === 'support' && `Support (${sessions.filter((s) => s.is_open).length})`}
             {t === 'settings' && 'Settings'}
           </button>
         ))}
@@ -87,7 +93,9 @@ export function TenantWorkspace({
       {tab === 'roles' && <RolesTab tenantId={tenantId} roles={tenantRoles} tree={permissionTree} run={run} busy={busy} />}
       {tab === 'branches' && <BranchesTab tenantId={tenantId} branches={detail.branches} tenant={tenant} run={run} busy={busy} />}
       {tab === 'modules' && <ModulesTab tenantId={tenantId} modules={detail.modules} run={run} busy={busy} />}
-      {tab === 'settings' && <SettingsTab tenantId={tenantId} tenant={tenant} isDemo={isDemo} run={run} busy={busy} />}
+      {tab === 'security' && <SecurityTab tenantId={tenantId} security={security} run={run} busy={busy} />}
+      {tab === 'support' && <SupportTab tenantId={tenantId} tenantName={tenant.display_name ?? ''} sessions={sessions} run={run} busy={busy} />}
+      {tab === 'settings' && <SettingsTab tenantId={tenantId} tenant={tenant} run={run} busy={busy} />}
     </>
   );
 }
