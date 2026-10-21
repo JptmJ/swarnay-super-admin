@@ -179,15 +179,6 @@ export interface PlatformRole {
   code: string; name: string; description: string; permissions: readonly string[];
 }
 
-export interface SupportSessionRow {
-  id: string; tenant_id: string; tenant_code: string; tenant_name: string;
-  reason: string; started_at: string; ends_at: string; ended_at: string | null;
-  can_write: boolean; is_open: boolean; ip_address: string | null;
-  operator_name: string | null; operator_email: string | null;
-  /** Audited changes made inside the window. */
-  action_count: string;
-}
-
 /** Who may unlock the vault, by the kind of role they hold. */
 export type VaultRoleType = 'owner' | 'admin' | 'staff';
 

@@ -5,8 +5,7 @@ import { readOperator, shellOperator } from '@/lib/operator';
 import { Shell } from '@/components/Shell';
 import { TenantWorkspace } from './TenantWorkspace';
 import type {
-  BranchRow, ModuleRow, PermissionTreeModule, SupportSessionRow,
-  TenantRoleRow, TenantSecurity, UserRow,
+  BranchRow, ModuleRow, PermissionTreeModule, TenantRoleRow, TenantSecurity, UserRow,
 } from '@/lib/api';
 
 export const dynamic = 'force-dynamic';
@@ -23,7 +22,7 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ i
   if (!(await readSession())) redirect('/login');
   const { id } = await params;
 
-  const [operator, detailResult, sessionsResult, tenantRolesResult, treeResult, securityResult] = await Promise.all([
+  const [operator, detailResult, tenantRolesResult, treeResult, securityResult] = await Promise.all([
     readOperator(),
     callBackend<Detail>(`/api/platform/tenants/${id}`),
     // This business's own roles, and the tree the staff role builder ticks.

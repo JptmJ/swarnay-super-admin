@@ -247,6 +247,39 @@ tr.row-detail, tr.row-detail:hover { background: var(--forest-surface); }
 .sub-item input { width: auto; margin-top: 2px; accent-color: var(--forest); }
 .sub-item.fixed { cursor: default; color: var(--ink-faint); }
 
+/* ---------------- demo accounts ---------------- */
+.pill.demo { background: var(--info-bg); color: var(--info); border: 1px solid var(--info); }
+.progress { height: 8px; border-radius: 99px; background: var(--border-subtle); overflow: hidden; }
+.progress > span { display: block; height: 100%; background: var(--gold); border-radius: 99px; transition: width 0.4s ease; }
+@media (prefers-reduced-motion: reduce) { .progress > span { transition: none; } }
+.demo-list { margin: 0; padding-left: 18px; color: var(--ink-secondary); font-size: 13.6px; }
+.demo-list li + li { margin-top: 4px; }
+.demo-keys { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-bottom: 14px; padding: 12px 14px;
+  background: var(--gold-surface); border: 1px solid var(--gold-border); border-radius: 8px; }
+.demo-keys div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.demo-keys span { font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); font-family: var(--f-mono); }
+.demo-keys code { font-size: 15px; color: var(--ink); word-break: break-all; user-select: all; }
+.demo-roles { margin-top: 12px; font-size: 13.4px; }
+.demo-roles summary { cursor: pointer; color: var(--ink-secondary); font-weight: 600; }
+.demo-role { margin-top: 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.chips code { background: var(--forest-surface); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; font-size: 11.6px; }
+.chip { font-size: 12.4px; color: var(--ink-secondary); background: var(--forest-surface); border: 1px solid var(--border); border-radius: 99px; padding: 3px 10px; }
+.chip b { font-variant-numeric: tabular-nums; color: var(--ink); }
+/* Links on this page stay readable in both themes; the forest link colour is too dark on a dark card. */
+.demo-title a, .demo-keys a { color: var(--gold-ink); text-decoration: none; }
+.demo-title a:hover, .demo-keys a:hover { text-decoration: underline; }
+
+/* ---------------- theme switch (sidebar) ---------------- */
+.theme-switch { display: flex; gap: 2px; margin: 0 8px 12px; padding: 3px; border-radius: 8px; background: rgba(255,255,255,0.08); }
+.theme-switch button {
+  flex: 1; font-family: var(--f-body); font-size: 11.6px; font-weight: 600; color: #c6dbd1;
+  background: none; border: 0; border-radius: 6px; padding: 5px 0; cursor: pointer;
+}
+.theme-switch button:hover { color: #fff; }
+.theme-switch button[aria-pressed='true'] { background: var(--gold); color: #24190a; }
+.theme-switch button:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+
 /* ---------------- security vault & private entry ---------------- */
 .toggle-row { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-weight: 500; }
 .toggle-row input { width: auto; margin-top: 3px; accent-color: var(--forest); }
@@ -262,3 +295,51 @@ tr.row-detail, tr.row-detail:hover { background: var(--forest-surface); }
 .pattern-art:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .pattern-art > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .pattern-points { pointer-events: none; }
+
+/* ---------------- data import ---------------- */
+.pill.st-draft, .pill.st-partial, .pill.rs-pending { background: var(--warn-bg); color: var(--warn); }
+.pill.st-validating, .pill.st-importing, .pill.st-undoing { background: var(--info-bg); color: var(--info); }
+.pill.st-validated, .pill.st-imported, .pill.rs-valid, .pill.rs-imported { background: var(--success-bg); color: var(--success); }
+.pill.st-undone, .pill.rs-skipped, .pill.rs-undone { background: var(--border-subtle); color: var(--ink-faint); }
+.pill.rs-invalid, .pill.rs-failed { background: var(--danger-bg); color: var(--danger); }
+.imp-bad { color: var(--danger); }
+.imp-warn { color: var(--warn); }
+.stat.imp-ok { border-left: 3px solid var(--success); }
+.stat.imp-bad { border-left: 3px solid var(--danger); }
+.stat.imp-warn { border-left: 3px solid var(--gold); }
+
+.imp-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px 22px; }
+.imp-group h3 { font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); font-family: var(--f-mono); margin: 0 0 6px; }
+.imp-kind { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 9px 10px; border-radius: 8px; border: 1px solid transparent; }
+.imp-kind + .imp-kind { margin-top: 2px; }
+.imp-kind:hover { background: var(--forest-surface); }
+.imp-kind.selected { border-color: var(--gold-border); background: var(--gold-surface); }
+.imp-kind strong { font-size: 13.8px; margin-right: 8px; }
+.imp-kind .chip, .imp-kind .pill { margin-right: 6px; vertical-align: 1px; }
+.imp-kind .faint { margin-top: 2px; line-height: 1.45; }
+
+.imp-drop {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-align: center;
+  margin-top: 16px; padding: 26px 16px; border: 1.5px dashed var(--border-strong); border-radius: var(--radius);
+  background: var(--canvas); color: var(--ink-secondary); font-size: 13.6px; font-weight: 500; cursor: pointer;
+}
+.imp-drop:hover, .imp-drop.over { border-color: var(--gold); background: var(--gold-surface); }
+.imp-drop input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.imp-drop:focus-within { outline: 2px solid var(--gold); outline-offset: 2px; }
+.imp-preview td { white-space: nowrap; max-width: 220px; overflow: hidden; text-overflow: ellipsis; font-size: 12.8px; padding: 7px 12px; }
+
+.imp-map td { vertical-align: top; }
+.imp-map td:first-child { width: 34%; }
+.imp-map td select, .imp-map td input { padding: 6px 9px; font-size: 13px; }
+.imp-map td select + select, .imp-map td select + input, .imp-map td input + select { margin-top: 6px; }
+.imp-map .req { color: var(--danger); }
+.imp-sample { font-size: 12.4px; max-width: 260px; overflow-wrap: anywhere; }
+.imp-msgs { margin: 0; padding-left: 16px; font-size: 12.8px; }
+.imp-msgs li + li { margin-top: 2px; }
+.imp-cells { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+.imp-cells input { padding: 6px 9px; font-size: 13px; }
+.imp-go { border-left: 3px solid var(--gold); }
+@media (max-width: 820px) {
+  .imp-map td:first-child { width: auto; }
+  .imp-kind { flex-direction: column; }
+}
