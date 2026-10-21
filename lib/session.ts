@@ -13,7 +13,8 @@ import { cookies } from 'next/headers';
 export const SESSION_COOKIE = 'sw_platform_session';
 export const REFRESH_COOKIE = 'sw_platform_refresh';
 
-export const backendUrl = (): string => process.env.BACKEND_URL ?? 'https://api.swarnay.com';
+// Missing setting → the backend on this machine, never production by accident.
+export const backendUrl = (): string => process.env.BACKEND_URL ?? 'http://localhost:4000';
 
 export interface PlatformSession {
   accessToken: string;

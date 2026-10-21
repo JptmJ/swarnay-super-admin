@@ -1,0 +1,7 @@
+# The image installs its own dependencies and builds its own .next.
+node_modules
+.next
+.git
+# .env IS copied in: `next build` bakes NEXT_PUBLIC_APP_URL into the app. It
+# holds only public URLs — this panel has no secrets of its own.
+.env*.local

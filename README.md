@@ -6,25 +6,22 @@ Nobody but a platform operator can sign in here.
 
 ```bash
 npm install
-npm run dev            # http://localhost:4100, against the backend on your machine (:4000)
-npm run dev:deployed   # http://localhost:4100, against the deployed backend — live data
+cp .env.example .env   # once — then set the values for this machine
+npm run dev            # http://localhost:4100
+npm run build && npm run start   # production (what the Docker image runs)
 ```
 
-Which backend it talks to comes from the committed `.env.<mode>` files, so
-nobody edits a shared file to switch:
+Two env files: `.env` (this machine's values, never in git) and `.env.example`
+(the template). On a laptop `BACKEND_URL=http://localhost:4000` (or
+`https://api.swarnay.com` to work against the live backend); on the server
+`https://api.swarnay.com`. On the server: `cp .env.example .env`, then
+`docker compose up -d --build`.
 
-| File | Used by | `BACKEND_URL` |
-|---|---|---|
-| `.env.development` | `npm run dev` | `http://localhost:4000` |
-| `.env.deployed` | `npm run dev:deployed` | `https://api.swarnay.com` |
-| `.env.production` | `next build` / `next start` | `https://api.swarnay.com` (the host's own setting wins) |
-
-`NEXT_PUBLIC_APP_URL` is where the tenant app is served — the Support tab builds
-its "open the shop" link from it. Personal overrides go in
-`.env.development.local`, which is not committed. The backend URL is read on the
-server only; the browser never calls the backend directly, so no CORS setup is
-needed. See `../swarnay-backend/docs/ENVIRONMENTS.md` for how all three apps fit
-together.
+`NEXT_PUBLIC_APP_URL` is where the shop app is served — the Support tab builds
+its "open the shop" link from it, and `next build` bakes it in, so rebuild after
+changing it. The backend URL is read on the server only; the browser never calls
+the backend directly, so no CORS setup is needed. In production the sign-in
+cookie is `Secure`, so the panel must be served over HTTPS.
 
 ## First sign-in
 
