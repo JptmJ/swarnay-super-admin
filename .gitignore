@@ -6,5 +6,4 @@ out
 next-env.d.ts
 .DS_Store
 
-# Personal overrides: .env.development.local. Only the .env.<mode> files are shared.
 .env
